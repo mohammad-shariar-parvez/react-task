@@ -58,7 +58,6 @@ const Problem2 = () => {
     updateUrl('/problem-2');
     setModalA(false);
     setModalB(false);
-    setModalC(false);
   };
 
   const handleCheckboxChange = () => {
@@ -66,10 +65,15 @@ const Problem2 = () => {
   };
 
   const handleContactClick = (contact) => {
+    setModalA(false);
+    setModalB(false);
     setSelectedContact(contact);
     setModalC(true);
   };
   const handleCloseModalsC = () => {
+    console.log('MODAL C');
+    setModalA(true);
+    setModalB(true);
     setModalC(false);
   };
   const filteredContactsA = onlyEven
@@ -293,7 +297,6 @@ const Problem2 = () => {
         className={`modal ${modalC ? 'show' : ''}`}
         style={{ display: modalC ? 'block' : 'none' }}
         tabIndex='-1'
-        role='dialog'
       >
         <div className='modal-dialog'>
           <div className='modal-content'>
@@ -315,20 +318,17 @@ const Problem2 = () => {
                 type='button'
                 className='btn btn-secondary'
                 onClick={handleCloseModalsC}
+                style={{
+                  backgroundColor: '#ffff',
+                  borderColor: '#46139f',
+                  color: 'black',
+                }}
               >
                 Close
               </button>
             </div>
           </div>
         </div>
-      </div>
-      <div
-        className={`modal fade ${modalC ? 'show' : ''}`}
-        style={{ display: modalC ? 'block' : 'none' }}
-        tabIndex='-1'
-      >
-        {/* Modal C content */}
-        {/* Display details of the selected contact */}
       </div>
     </div>
   );
