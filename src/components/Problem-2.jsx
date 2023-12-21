@@ -1,49 +1,61 @@
 import React, { useEffect, useState } from 'react';
-
+import { useNavigate, useParams } from 'react-router-dom';
 const Problem2 = () => {
-  //   const history = useHistory();
+  const navigate = useNavigate();
   const [allContacts, setAllContacts] = useState([]);
   const [usContacts, setUSContacts] = useState([]);
   const [modalA, setModalA] = useState(false);
   const [modalB, setModalB] = useState(false);
   const [modalC, setModalC] = useState(false);
-  //   const [country, setCountry] = useState('');
   const [selectedContact, setSelectedContact] = useState(null);
   const [onlyEven, setOnlyEven] = useState(false);
+  //   console.log('USE PARAMS', useParams());
   const fetchContacts = async () => {
     try {
       const response = await fetch(
         'https://contact.mediusware.com/api/contacts/?format=json'
-        // `https://contact.mediusware.com/api/country-contacts/${country}/?format=json`
       );
       const data = await response.json();
       setAllContacts(data.results);
-      setUSContacts(
-        data.results.filter(
-          (contact) => contact.country.name === 'United States'
-        )
-      );
     } catch (error) {
       console.error('Error fetching contacts:', error);
     }
   };
+
+  const fetchUsContacts = async () => {
+    try {
+      const response = await fetch(
+        `https://contact.mediusware.com/api/country-contacts/united states/?format=json`
+      );
+      const data = await response.json();
+      setUSContacts(data.results);
+    } catch (error) {
+      console.error('Error fetching US-contacts:', error);
+    }
+  };
+
   useEffect(() => {
     fetchContacts();
+    fetchUsContacts();
   }, []);
 
+  const updateUrl = (path) => {
+    window.history.pushState({}, '', path);
+  };
   const handleModalA = () => {
-    // history.push('/all-country');
+    updateUrl('/problem-2/all-contacts');
     setModalA(true);
     setModalB(false);
   };
 
   const handleModalB = () => {
-    // history.push('/united States');
+    updateUrl('/problem-2/us-contacts');
     setModalB(true);
     setModalA(false);
   };
 
   const handleCloseModals = () => {
+    updateUrl('/problem-2');
     setModalA(false);
     setModalB(false);
     setModalC(false);
@@ -142,13 +154,41 @@ const Problem2 = () => {
                   Only even
                 </label>
               </div>
-              <button
-                type='button'
-                className='btn btn-secondary'
-                onClick={handleCloseModals}
-              >
-                Close
-              </button>
+
+              {/* ... (modal content) */}
+              <div className='modal-footer'>
+                {/* Switch to Modal B Button */}
+                <button
+                  type='button'
+                  className='btn btn-primary'
+                  onClick={handleModalA}
+                  style={{ backgroundColor: '#46139f' }}
+                >
+                  All Contacts
+                </button>
+                {/* Switch to Modal B Button */}
+                <button
+                  type='button'
+                  className='btn btn-warning'
+                  onClick={handleModalB}
+                  style={{ backgroundColor: '#ff750' }}
+                >
+                  US Contacts
+                </button>
+                {/* Close Modal A Button */}
+                <button
+                  type='button'
+                  className='btn btn-secondary'
+                  onClick={handleCloseModals}
+                  style={{
+                    backgroundColor: '#ffff',
+                    borderColor: '#46139f',
+                    color: 'black',
+                  }}
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -173,7 +213,6 @@ const Problem2 = () => {
             <div className='modal-body'>
               {/* Table to display US contacts */}
               <table className='table table-striped bordered hover'>
-                {/* Table headers */}
                 <thead>
                   <tr>
                     <th>ID</th>
@@ -181,7 +220,7 @@ const Problem2 = () => {
                     <th>Country</th>
                   </tr>
                 </thead>
-                {/* Table body */}
+
                 <tbody>
                   {filteredContactsB.map((contact) => (
                     <tr
@@ -210,13 +249,40 @@ const Problem2 = () => {
                   Only even
                 </label>
               </div>
-              <button
-                type='button'
-                className='btn btn-secondary'
-                onClick={handleCloseModals}
-              >
-                Close
-              </button>
+
+              <div className='modal-footer'>
+                {/* Switch to Modal B Button */}
+                <button
+                  type='button'
+                  className='btn btn-primary'
+                  onClick={handleModalA}
+                  style={{ backgroundColor: '#46139f' }}
+                >
+                  All Contacts
+                </button>
+                {/* Switch to Modal B Button */}
+                <button
+                  type='button'
+                  className='btn btn-warning'
+                  onClick={handleModalB}
+                  style={{ backgroundColor: '#ff750' }}
+                >
+                  US Contacts
+                </button>
+                {/* Close Modal A Button */}
+                <button
+                  type='button'
+                  className='btn btn-secondary'
+                  onClick={handleCloseModals}
+                  style={{
+                    backgroundColor: '#ffff',
+                    borderColor: '#46139f',
+                    color: 'black',
+                  }}
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -243,7 +309,6 @@ const Problem2 = () => {
               <p>ID: {selectedContact?.id}</p>
               <p>Phone: {selectedContact?.phone}</p>
               <p>Country: {selectedContact?.country?.name}</p>
-              {/* Add more details as needed */}
             </div>
             <div className='modal-footer'>
               <button
