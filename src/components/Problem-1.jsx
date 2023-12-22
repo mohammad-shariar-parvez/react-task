@@ -13,10 +13,12 @@ const Problem1 = () => {
   };
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    setTasks([...tasks, { name: formData.name, status: formData.status }]);
-    setFormData({ name: '', status: '' });
+    if (formData.name && formData.status) {
+      setTasks([...tasks, { name: formData.name, status: formData.status }]);
+      setFormData({ name: '', status: '' });
+    }
   };
-
+  const isSubmitDisabled = !formData.name || !formData.status;
   const getFilteredAndSortedTasks = () => {
     // Filter tasks based on the selected filter
     let filteredTasks;
@@ -73,7 +75,11 @@ const Problem1 = () => {
               />
             </div>
             <div className='col-auto'>
-              <button type='submit' className='btn btn-primary'>
+              <button
+                disabled={isSubmitDisabled}
+                type='submit'
+                className='btn btn-primary'
+              >
                 Submit
               </button>
             </div>
